@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const icons=[{
 
-  path:'https://www.linkedin.com/in/shaibin-kb-6a9761251/',
+  path:'https://linkedin.com/in/shaibinkb',
   name:<RiLinkedinFill />,
 },
 {

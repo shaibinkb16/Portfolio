@@ -12,59 +12,71 @@ import ProjectCard from '@/components/ui/ProjectCard'; // Custom project card co
 
 const projectData = [
   {
-    image: '/work/3.png',
-    category: 'MERN + Electron',
-    name: 'AI Powered IDE',
-    description: 'AI Powered IDE is an intelligent development environment that integrates code editing, debugging, and real-time collaboration features, enhanced with AI tools for code suggestions, error detection, and a real-time chat interface to improve developer productivity and teamwork.',
-  /*   link: 'https://nexawebsite.com',
-    github: 'https://github.com/shaibinkb/nexawebsite', */
+    category: 'Multi-Agent',
+    name: 'Multi-Agent AI Voice Platform',
+    description: 'Real-time voice AI system using LiveKit, WebRTC, and MCP handling 1000+ daily conversations. 4 specialized agents with seamless handoff. RAG using Amazon Bedrock, FAISS, and LangGraph across 10,000+ docs.',
+    github: 'https://github.com/shaibinkb16',
   },
   {
-    image: '/work/iphone.png',
-    category: 'React',
-    name: 'Apple Website Clone',
-    description: "The Apple Clone Website is a visually stunning site that replicates the sleek design and functionality of Apple's official site, enhanced with 3D animations using Three.js. It offers an interactive, immersive experience with smooth transitions and dynamic visuals to showcase products and features..",
-  /*   link: 'https://solsticwebsite.com',
-    github: 'https://github.com/shaibinkb/solsticwebsite', */
+    category: 'Multi-Agent',
+    name: 'Chargeback Processing System',
+    description: 'Agentic chargeback automation with 4 AI agents handling credit card disputes, card distribution, PACI reconciliation, account bills, and expense tracking.',
+    github: 'https://github.com/shaibinkb16',
+  },
+  {
+    category: 'Computer Vision',
+    name: 'Person Re-Identification System',
+    description: 'CNN-based person search using YOLO, CLIP, and BLIP. Identifies individuals by hair color, dress color, and time of appearance across camera feeds.',
+    github: 'https://github.com/shaibinkb16',
+  },
+  {
+    category: 'Full-Stack AI',
+    name: 'Enterprise AI Learning Management System',
+    description: 'AI-powered LMS for 500+ users with RAG chatbot (92% accuracy), automated quiz generation using GPT-4, FastAPI, React, and PostgreSQL.',
+    github: 'https://github.com/shaibinkb16',
+  },
+  {
+    category: 'Full-Stack AI',
+    name: 'Medro — Hospital Document Management',
+    description: 'AI-powered medical records platform for hospitals with smart search across patient history, prescriptions, reports, and AI health recommendations.',
+    github: 'https://github.com/shaibinkb16',
+  },
+  {
+    category: 'AI Chatbots',
+    name: 'AI Chatbot Suite',
+    description: 'Production-grade AI chatbots including finance, customer care, and domain-specific assistants built with LangChain, RAG, and GPT-4.',
+    github: 'https://github.com/shaibinkb16',
   },
 ];
 
 const Work = () => {
   return (
-    <section className="relative mb-12 xl:mb-48">
+    <section className="mb-12 xl:mb-24">
       <div className="container mx-auto">
-        {/* Header section */}
-        <div className="max-w-[400px] mx-auto xl:mx-0 text-center xl:text-left mb-12 xl:h-[400px] flex flex-col justify-center items-center xl:items-start">
-          <h2 className="section-title mb-4">My Latest Projects</h2>
-          <p className="subtitle mb-8">
-            Explore some of my most recent projects leveraging modern web technologies like React, Node.js, and more. Each project demonstrates a focus on scalability, performance, and user experience.
+        <div className="text-center xl:text-left mb-10">
+          <h2 className="section-title mb-4 mx-auto xl:mx-0">My Latest Projects</h2>
+          <p className="subtitle mb-6 max-w-[500px] mx-auto xl:mx-0">
+            Production AI projects leveraging LLMs, multi-agent systems, and voice AI.
           </p>
           <Link href="/projects">
             <Button>All Projects</Button>
           </Link>
         </div>
 
-        {/* Projects carousel */}
-        <div className="xl:max-w-[800px] xl:absolute right-72 top-0 gap-1">
-          <Swiper
-            className="h-[480px]"
-            slidesPerView={1}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-            }}
-            spaceBetween={30}
-            modules={[Pagination]}
-            pagination={{ clickable: true }}
-          >
-            {projectData.map((project, index) => (
-              <SwiperSlide key={index}>
-                <ProjectCard project={project} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+        <Swiper
+          slidesPerView={1}
+          breakpoints={{ 640: { slidesPerView: 2 } }}
+          spaceBetween={24}
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+          className="pb-10"
+        >
+          {projectData.map((project, index) => (
+            <SwiperSlide key={index} className="h-auto">
+              <ProjectCard project={project} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

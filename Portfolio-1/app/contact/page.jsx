@@ -13,7 +13,7 @@ const Contact = () => {
             </div>
             <h1 className="h1 max-w-md mb-8">Let's Build Something Great</h1>
             <p className="subtitle max-w-[400px]">
-              I specialize in crafting high-quality, scalable software solutions. Whether you're looking to develop a web application, mobile app, or custom software, I'm here to help bring your ideas to life. Let's collaborate and build something amazing together.
+              AI Engineer specializing in LLMs, Generative AI, and Voice AI. Looking to collaborate on impactful AI projects — multi-agent systems, RAG pipelines, voice AI, or full-stack AI applications. Let's build something great together.
             </p>
           </div>
           <div className="hidden xl:flex w-full bg-contact_illustration_light dark:bg-contact_illustration_dark bg-contain bg-top bg-no-repeat"></div>
@@ -23,11 +23,11 @@ const Contact = () => {
             <div className="flex flex-col gap-y-4 xl:gap-y-14 mv-12 xl:mb:24 text-base xl:text-lg">
               <div className="flex items-center gap-x-8">
                 <MailIcon size={18} className="text-primary" />
-                <div>shaibinkb16@gamil.com</div>
+                <div>shaibinkb16@gmail.com</div>
               </div>
               <div className="flex items-center gap-x-8">
                 <HomeIcon size={18} className="text-primary" />
-                <div>Kumily,Idukki</div>
+                <div>Kochi, Kerala, India</div>
               </div>
               <div className="flex items-center gap-x-8">
                 <PhoneCall size={18} className="text-primary" />

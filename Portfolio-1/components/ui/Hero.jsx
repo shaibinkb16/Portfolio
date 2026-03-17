@@ -10,16 +10,17 @@ const Hero = () => {
       <div className="container mx-auto -mt-16">
         <div className="flex justify-between gap-x-8">
           <div className="flex max-w-[600px] flex-col justify-center mx-auto xl:mx-0 text-center xl:text-left">
-            <div className="text-sm uppercase font-semibold mb-4 text-primary tracking-[4px]">Software Developer</div>
+            <div className="text-sm uppercase font-semibold mb-4 text-primary tracking-[4px]">AI Engineer — Machine Learning — GenAI — Voice AI</div>
             <h1 className="h1 mb-4">Hello, My name is Shaibin K B</h1>
-            <p className="subtitle max-w-[490px] mx-auto xl:mx-0">Brief description with insights into myself, my vocational journey, and what I engage in professionally.</p>
+            <p className="subtitle max-w-[490px] mx-auto xl:mx-0">AI Engineer specializing in LLMs, Generative AI, and Voice AI with 8+ months production experience. Building multi-agent platforms, RAG systems, and real-time voice AI solutions.</p>
             <div className="flex flex-col gap-y-3 md:flex-row gap-x-3 mx-auto xl:mx-0 mb-12">
               <Link href='/contact'>
                 <Button className="gap-x-2">Contact Me<Send size={18} /></Button>
               </Link>
               <a
-                href="https://drive.google.com/file/d/1KXzUq1BpT7IEPHwuKPeY6YcEiIL66MmZ/view?usp=drive_link"  // Replace with the actual path to your CV file
-                download
+                href="/ShaibinKB-AI_Engineer.pdf"
+                target="_blank"
+                rel="noreferrer"
               >
                 <Button variant='secondary' className="gap-x-2">
                   Download CV<Download size={18} />

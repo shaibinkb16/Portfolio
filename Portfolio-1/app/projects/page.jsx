@@ -1,78 +1,80 @@
 'use client';
-import React,{useState} from 'react';
-import { Tabs,TabsList,TabsContent,TabsTrigger } from "@/components/ui/tabs";
+import React, { useState } from 'react';
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCard from "@/components/ui/ProjectCard";
 
-
-const projectData=[
+const projectData = [
   {
-    image:'/work/image2.png',
-    category:'react js',
-    category:'electron',
-    name:'AI-Powered IDE',
-    description:'AI Powered IDE is an intelligent development environment that integrates code editing, debugging, and real-time collaboration features, enhanced with AI tools for code suggestions, error detection, and a real-time chat interface to improve developer productivity and teamwork.',
-    link:'/',
-    github:'/',
+    category: 'multi-agent',
+    name: 'Multi-Agent AI Voice Platform',
+    description: 'Real-time voice AI system using LiveKit, WebRTC, and MCP handling 1000+ daily conversations. 4 specialized agents with seamless handoff. RAG using Amazon Bedrock, FAISS, and LangGraph across 10,000+ docs. Sub-500ms latency, 98% uptime.',
+    github: 'https://github.com/shaibinkb16',
   },
   {
-    image:'/work/image.png',
-    category:'react js',
-    name:'AI Image Generation App',
-    description:'An AI Image Generation App uses machine learning to create unique images from text prompts or inputs. It allows users to generate customized artwork, offering creative flexibility and high-quality results.',
-    link:'/',
-    github:'/',
+    category: 'multi-agent',
+    name: 'Chargeback Processing System',
+    description: 'Agentic chargeback automation platform with 4 specialized AI agents handling credit card dispute resolution, card distribution workflows, and PACI reconciliation. Automates account bills, expense tracking, and financial reconciliation across banking backends.',
+    github: 'https://github.com/shaibinkb16',
   },
   {
-    image:'/work/movies.png',
-    category:'HTML & CSS',
-    name:'Fox Movies App',
-    description:'Fox Movies is an app that allows users to explore a vast collection of movies, with detailed information including ratings, descriptions, and trailers. It provides an intuitive interface for easy movie discovery and browsing.',
-    link:'/',
-    github:'/',
+    category: 'computer vision',
+    name: 'Person Re-Identification System',
+    description: 'CNN-based person search system using YOLO for detection, CLIP for semantic understanding, and BLIP for image captioning. Identifies individuals based on characteristics like hair color, dress color, and time of appearance across camera feeds.',
+    github: 'https://github.com/shaibinkb16',
   },
   {
-    image:'/work/iphone.png',
-    category:'react js',
-    name:'Apple Clone Website',
-    description:"The Apple Clone Website is a visually stunning site that replicates the sleek design and functionality of Apple's official site, enhanced with 3D animations using Three.js. It offers an interactive, immersive experience with smooth transitions and dynamic visuals to showcase products and features..",
-    link:'/',
-    github:'/',
+    category: 'full-stack ai',
+    name: 'Enterprise AI Learning Management System',
+    description: 'Full-stack AI-powered LMS for 500+ users. RAG chatbot with LangChain and ChromaDB achieving 92% accuracy. Automated quiz generation using GPT-4. Built with FastAPI, React, PostgreSQL, deployed on AWS EC2 with PM2 and Nginx.',
+    github: 'https://github.com/shaibinkb16',
   },
-  
+  {
+    category: 'full-stack ai',
+    name: 'Medro — Hospital Document Management',
+    description: 'AI-powered medical records platform for hospitals enabling easy search of patient history, medical reports, prescriptions, and documents. Features AI recommendations, smart document retrieval, and a unified health record dashboard.',
+    github: 'https://github.com/shaibinkb16',
+  },
+  {
+    category: 'ai chatbots',
+    name: 'AI Chatbot Suite',
+    description: 'Collection of production-grade AI chatbots including a finance chatbot for expense and investment queries, a customer care chatbot for automated support, and domain-specific assistants — all built with LangChain, RAG, and GPT-4.',
+    github: 'https://github.com/shaibinkb16',
+  },
 ];
-const uniqueCategories = ['all projects', ...new Set(projectData.map(items => items.category))];
+
+const uniqueCategories = ['all projects', ...new Set(projectData.map(p => p.category))];
 
 const Projects = () => {
-  const [categories, setCategories] = useState(uniqueCategories);
   const [category, setCategory] = useState('all projects');
 
-  const filteredProjects=projectData.filter(project=>{
-
-    return category==='all projects' ?project:project.category===category;
-  });
+  const filteredProjects = projectData.filter(p =>
+    category === 'all projects' ? true : p.category === category
+  );
 
   return (
     <section className='min-h-screen pt-12'>
       <div className="container mx-auto">
-        <h2 className='section-title mb-8 xl:mb-16 text-center mx-auto'>My Projects</h2>
-        <Tabs defaultValue={category} className='mb-24 xl:mb-48'>
-          <TabsList className='w-full grid h-full md:grid-cols-4 lg:max-w-[640px] mb-12 mx-auto md:border dark:border-none'>
-            {categories.map((category, index) => (
-              <TabsTrigger onClick={()=>setCategory(category)} key={index} value={category} className='capitalize w-[162px] md:w-auto'>
-                {category}
+        <h2 className='section-title mb-8 xl:mb-12 text-center mx-auto'>My Projects</h2>
+        <Tabs defaultValue={category} className='mb-16'>
+          <TabsList className='w-full flex flex-wrap h-full gap-2 justify-center mb-10 bg-transparent'>
+            {uniqueCategories.map((cat, index) => (
+              <TabsTrigger
+                onClick={() => setCategory(cat)}
+                key={index}
+                value={cat}
+                className='capitalize border dark:border-border rounded-full px-4 py-1 text-sm'
+              >
+                {cat}
               </TabsTrigger>
             ))}
           </TabsList>
-              <div className='text-lg xl:mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8'>
-                {filteredProjects.map((project,index)=>
-                {
-                  return(
-                    <TabsContent value={category} key={index} className="w-full h-full">
-                      <ProjectCard project={project} />
-                    </TabsContent>
-                  )
-                })}
-              </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {filteredProjects.map((project, index) => (
+              <TabsContent value={category} key={index} className="w-full h-full m-0">
+                <ProjectCard project={project} />
+              </TabsContent>
+            ))}
+          </div>
         </Tabs>
       </div>
     </section>

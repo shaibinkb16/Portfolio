@@ -19,15 +19,11 @@ const infoData = [
   },
   {
     icon: <PhoneCall size={20} />,
-    text: "+91 8075885690",
+    text: "+91-8075885690",
   },
   {
     icon: <MailIcon size={20} />,
     text: "shaibinkb16@gmail.com",
-  },
-  {
-    icon: <Calendar size={20} />,
-    text: "Born on 16 Aug, 2002",
   },
   {
     icon: <GraduationCap size={20} />,
@@ -35,7 +31,7 @@ const infoData = [
   },
   {
     icon: <HomeIcon size={20} />,
-    text: "Kumily,Idukki",
+    text: "Kochi, Kerala, India",
   },
 ];
 
@@ -44,19 +40,14 @@ const qualificationData = [
     title: "education",
     data: [
       {
-        university: "K T U University",
-        qualification: "Master of Computer Applications",
-        years: "2023 - Pursuig",
+        university: "St. Joseph's College of Engineering and Technology, Palai",
+        qualification: "Master of Computer Applications (MCA)",
+        years: "2023 - 2025 | CGPA: 8.78/10",
       },
       {
-        university: "Mahathma Gandhi University",
+        university: "Sahyajyothi Arts and Science College, Kumily",
         qualification: "Bachelor of Science in Computer Science",
-        years: "2020 - 2023",
-      },
-      {
-        university: "MES HSS Amayar",
-        qualification: "+2 Computer Science",
-        years: "2018 - 2020",
+        years: "2020 - 2023 | CGPA: 7.48/10",
       },
     ],
   },
@@ -64,8 +55,14 @@ const qualificationData = [
     title: "experience",
     data: [
       {
-        company: "Fresher",
-        role: "Eager Software Engineer, dedicated to delivering excellence. Seeking new projects for impactful collaboration.",
+        company: "Alignminds Technology",
+        role: "Junior Software Engineer",
+        years: "Feb 2026 - Present",
+      },
+      {
+        company: "Art Technology and Software",
+        role: "Junior AI Engineer",
+        years: "May 2025 - Feb 2026",
       },
     ],
   },
@@ -73,31 +70,48 @@ const qualificationData = [
 
 const skillData = [
   {
-    title: "Skills",
-    data: [
-      { name: "Electron" },
-      { name: "React" },
-      { name: "Node.js" },
-      { name: "Express.js" },
-      { name: "MongoDB" },
-      { name: "Python" },
-      { name: "JavaScript" },
-      { name: "API Integration" },
-      { name: "MySQL" },
-      { name: "Git & GitHub" },
-      { name: "Tailwind CSS" },
-      { name: "Socket.IO" },
-   
-    ],
+    category: "AI & ML",
+    skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning", "Neural Networks", "Supervised Learning", "Unsupervised Learning", "Transfer Learning", "Model Training", "Model Deployment"],
   },
   {
-    title: "tools",
-    data: [
-      { imgPath: "about/Adobe Photoshop CC.svg" },
-      { imgPath: "about/Adobe_Illustrator CC.svg" },
-      { imgPath: "about/Adobe Indesign CC.svg" },
-      { imgPath: "about/blender-icon.svg" },
-    ],
+    category: "LLMs & GenAI",
+    skills: ["Large Language Models", "Generative AI", "GPT-4", "GPT-4o", "Claude", "LLaMA", "Mistral", "LLM Fine-tuning", "Prompt Engineering", "Few-Shot Learning", "Zero-Shot Learning"],
+  },
+  {
+    category: "AI Frameworks",
+    skills: ["Python", "PyTorch", "TensorFlow", "Keras", "Scikit-learn", "Hugging Face Transformers", "LangChain", "LangGraph", "LlamaIndex", "OpenAI API"],
+  },
+  {
+    category: "NLP",
+    skills: ["Natural Language Processing", "Text Classification", "Sentiment Analysis", "Text Generation", "Semantic Search"],
+  },
+  {
+    category: "AI Agents",
+    skills: ["Multi-Agent Systems", "Agent-to-Agent Communication (A2A)", "Model Context Protocol (MCP)", "ReAct Framework", "Agent Handoff", "Tool Integration"],
+  },
+  {
+    category: "RAG & Vector DBs",
+    skills: ["Retrieval-Augmented Generation", "Vector Embeddings", "ChromaDB", "FAISS", "Pinecone", "Amazon Bedrock Embeddings", "Hybrid Search"],
+  },
+  {
+    category: "Voice AI",
+    skills: ["LiveKit", "WebRTC", "Speech-to-Text (STT)", "Text-to-Speech (TTS)", "Whisper", "OpenAI TTS", "ElevenLabs", "Real-time Audio Streaming"],
+  },
+  {
+    category: "Backend & Cloud",
+    skills: ["FastAPI", "REST API", "AWS S3", "AWS EC2", "AWS Lambda", "Amazon Bedrock", "Azure AI Foundry", "Docker", "Git", "GitHub", "Linux", "Nginx", "PM2"],
+  },
+  {
+    category: "Databases",
+    skills: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Neo4j", "SQL", "NoSQL", "Graph Databases"],
+  },
+  {
+    category: "Observability",
+    skills: ["LangWatch", "LLM Tracing", "AI Pipeline Monitoring", "Performance Evaluation"],
+  },
+  {
+    category: "Frontend",
+    skills: ["React", "Node.js", "JavaScript", "TypeScript", "HTML5", "CSS3", "Streamlit"],
   },
 ];
 
@@ -139,12 +153,10 @@ const About = () => {
                 <TabsContent value="personal">
                   <div className="text-center xl:text-left">
                     <h3 className="h3 mb-4">
-                      Unmatched Service Quality for Over 10 Years
+                      AI Engineer with 8+ Months Production Experience
                     </h3>
                     <p className="subtitle max-w-xl max-auto xl:mx-0">
-                      I specialize in crafting intuitive websites with
-                      cutting-edge technology, delivering dynamic and engaging
-                      user experiences.
+                      Specializing in LLMs, Generative AI, and Voice AI. Delivered 5+ production AI projects achieving 95%+ accuracy, including multi-agent platforms and real-time voice AI systems.
                     </p>
                     <div className="grid xl:grid-cols-2 gap-4 mb-12">
                       {infoData.map((item, index) => (
@@ -241,35 +253,21 @@ const About = () => {
                 </TabsContent>
                 <TabsContent value="skills">
                   <div className="text-center xl:text-left">
-                    {/* Section Heading */}
-                    <h3 className="text-3xl font-bold mb-8">
-                      What I Use Everyday
-                    </h3>
-
-                    <div className="mb-16">
-                      {/* Skills Subheading */}
-                      <h4 className="text-xl font-semibold mb-4">Skills</h4>
-                      <div className="border-b border-gray-300 mb-6"></div>
-
-                      {/* Skills Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-                        {getData(skillData, "Skills").data.map(
-                          (item, index) => {
-                            // Ensure each skill item has a `name` property
-                            const { name } = item;
-                            return (
-                              <div
-                                key={index} // Unique key for each item
-                               
-                              >
-                                <span className="font-semibold text-lg">
-                                  {name}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
+                    <h3 className="text-3xl font-bold mb-6">What I Use Everyday</h3>
+                    <div className="flex flex-col gap-y-6 max-h-[520px] overflow-y-auto pr-2">
+                      {skillData.map((group, gi) => (
+                        <div key={gi}>
+                          <h4 className="text-base font-semibold text-primary mb-2">{group.category}</h4>
+                          <div className="border-b border-border mb-3"></div>
+                          <div className="flex flex-wrap gap-2">
+                            {group.skills.map((skill, si) => (
+                              <span key={si} className="bg-primary/10 text-foreground text-sm font-medium px-3 py-1 rounded-full border border-primary/20">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </TabsContent>

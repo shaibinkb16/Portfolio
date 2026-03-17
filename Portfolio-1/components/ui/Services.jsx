@@ -1,37 +1,36 @@
-import { Code, Database, Cloud, Server, GitBranch, Monitor } from "lucide-react";
+import { Brain, Mic, Bot, Database, Cloud, Code } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
-import { Caesar_Dressing } from "next/font/google";
 
 const ServicesData = [
   {
-    icon: <Code size={72} strokeWidth={0.8} />,
-    title: 'Custom Software Development',
-    description: 'Build tailored software solutions that meet your unique business needs. From concept to deployment, we turn ideas into functional applications.'
+    icon: <Brain size={72} strokeWidth={0.8} />,
+    title: 'LLM & Generative AI Development',
+    description: 'Build production-grade LLM applications using GPT-4, Claude, LLaMA, and Mistral. Expert in prompt engineering, fine-tuning, and RAG pipelines for enterprise use cases.'
+  },
+  {
+    icon: <Bot size={72} strokeWidth={0.8} />,
+    title: 'Multi-Agent AI Systems',
+    description: 'Architect multi-agent platforms with LangGraph, MCP, and A2A communication. Specialized agents with seamless handoff, tool integration, and ReAct framework orchestration.'
+  },
+  {
+    icon: <Mic size={72} strokeWidth={0.8} />,
+    title: 'Voice AI Solutions',
+    description: 'Real-time voice AI pipelines using LiveKit, WebRTC, Whisper STT, and OpenAI TTS. Sub-500ms latency with 94%+ transcription accuracy for production deployments.'
   },
   {
     icon: <Database size={72} strokeWidth={0.8} />,
-    title: 'Database Management',
-    description: 'Design, implement, and manage robust databases to ensure the reliability and scalability of your data systems.'
+    title: 'RAG & Vector Search',
+    description: 'Design and deploy Retrieval-Augmented Generation systems using FAISS, ChromaDB, Pinecone, and Amazon Bedrock Embeddings for intelligent enterprise knowledge retrieval.'
   },
   {
     icon: <Cloud size={72} strokeWidth={0.8} />,
-    title: 'Cloud Solutions',
-    description: 'Leverage the power of cloud computing to scale your business. We provide cloud infrastructure, migration, and management services.'
+    title: 'Cloud AI Deployment',
+    description: 'Deploy and scale AI systems on AWS (S3, EC2, Lambda, Bedrock) and Azure AI Foundry. Containerized with Docker, monitored with LangWatch for production reliability.'
   },
   {
-    icon: <Server size={72} strokeWidth={0.8} />,
-    title: 'Backend Development',
-    description: 'Develop secure and scalable server-side solutions. Our backend services ensure high performance and smooth user experiences.'
-  },
-  {
-    icon: <GitBranch size={72} strokeWidth={0.8} />,
-    title: 'Version Control & Git Services',
-    description: 'Collaborate on software projects with version control tools like Git. We help manage your codebase, track changes, and ensure seamless teamwork.'
-  },
-  {
-    icon: <Monitor size={72} strokeWidth={0.8} />,
-    title: 'UI/UX Development',
-    description: 'Creating intuitive and engaging user interfaces. We combine design expertise with coding skills to enhance your users’ experience.'
+    icon: <Code size={72} strokeWidth={0.8} />,
+    title: 'AI-Powered Backend APIs',
+    description: 'Build robust FastAPI backends integrating AI capabilities with PostgreSQL, MongoDB, and Redis. RESTful APIs powering intelligent applications at scale.'
   },
 ];
 
@@ -39,7 +38,6 @@ const Services = () => {
   return (
     <section className="mb-12 xl:mb-36">
       <div className="container mx-auto px-4 lg:px-8">
-        {/* Responsive Heading */}
         <h2 className="section-title mb-12 xl:mb-24 text-center mx-auto text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
           Services
         </h2>

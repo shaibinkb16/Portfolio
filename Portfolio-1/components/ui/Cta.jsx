@@ -11,7 +11,7 @@ const Cta = () => {
                 <h2 className="h2 max-w-xl text-center mb-8">
                     Prepared to turn your ideas into reality? I am here to help
                 </h2>
-                <Link href='/conatct'>
+                <Link href='/contact'>
                     <Button>Contact me</Button>
                 </Link>
             </div>

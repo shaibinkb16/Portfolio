@@ -1,95 +1,48 @@
 'use client';
-import { useState } from 'react';
-import { init, send } from 'emailjs-com';
+import { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { Button } from "./button";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
-import { User, MailIcon, ArrowRightIcon } from 'lucide-react';
+import { User, MailIcon, ArrowRightIcon, Loader2 } from 'lucide-react';
 
-
-// Initialize EmailJS (Make sure to use your PUBLIC KEY, not user ID)
-init('7BJU6XZt7VqAxd8Ye'); // Replace with your actual EmailJS public key
+const SERVICE_ID = 'service_hsw3ufm';
+const TEMPLATE_ID = 'template_uge58en';
+const PUBLIC_KEY = '7BJU6XZt7VqAxd8Ye';
 
 const CForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState(null);
+  const formRef = useRef();
+  const [status, setStatus] = useState(null); // null | 'loading' | 'success' | 'error'
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [id]: value,
-    }));
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitted(false);
-    setError(null);
-
+    setStatus('loading');
     try {
-      await send(
-        'service_hsw3ufm', // Replace with your EmailJS Service ID
-        'template_uge58en', // Replace with your EmailJS Template ID
-        {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }
-      );
-
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
+      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY);
+      setStatus('success');
+      formRef.current.reset();
     } catch (err) {
-      setError('Failed to send message. Please try again.');
       console.error('EmailJS Error:', err);
+      setStatus('error');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-      <div className="relative flex items-center mt-5 xl:mt-0">
-        <Input
-          type="text"
-          id="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <User className="absolute right-6" size={20} />
+    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-y-3">
+      <div className="relative flex items-center">
+        <Input type="text" name="name" placeholder="Name" required />
+        <User className="absolute right-4 text-muted-foreground" size={18} />
       </div>
-      <div className="relative flex items-center mt-5 xl:mt-0">
-        <Input
-          type="email"
-          id="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <MailIcon className="absolute right-6" size={20} />
+      <div className="relative flex items-center">
+        <Input type="email" name="email" placeholder="Email" required />
+        <MailIcon className="absolute right-4 text-muted-foreground" size={18} />
       </div>
-      <div className="relative flex items-center mt-5 xl:mt-0">
-        <Textarea
-          id="message"
-          placeholder="Type your message here..."
-          rows={4}
-          value={formData.message}
-          onChange={handleChange}
-        />
-      </div>
-      <Button type="submit" className="flex items-center max-w-[166px] gap-x-1">
-        Let's Talk
-        <ArrowRightIcon size={20} />
+      <Textarea name="message" placeholder="Type your message here..." rows={4} required />
+      <Button type="submit" disabled={status === 'loading'} className="flex items-center max-w-[166px] gap-x-2">
+        {status === 'loading' ? <><Loader2 size={16} className="animate-spin" /> Sending...</> : <>Let's Talk <ArrowRightIcon size={16} /></>}
       </Button>
-      {isSubmitted && <p className="text-green-500 mt-3">Message sent successfully!</p>}
-      {error && <p className="text-red-500 mt-3">Error: {error}</p>}
+      {status === 'success' && <p className="text-green-500 text-sm mt-1">Message sent successfully!</p>}
+      {status === 'error' && <p className="text-red-500 text-sm mt-1">Failed to send. Please try again.</p>}
     </form>
   );
 };
