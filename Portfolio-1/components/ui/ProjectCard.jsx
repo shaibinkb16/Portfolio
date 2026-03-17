@@ -12,9 +12,12 @@ const projectIcons = {
   'AI Chatbot Suite': <MessageSquare size={64} strokeWidth={0.8} className="text-primary" />,
 };
 
+import { FadeIn, StaggerContainer, StaggerItem } from "./AnimationWrapper";
+
 const ProjectCard = ({ project }) => {
   return (
-    <Card className='group overflow-hidden'>
+    <StaggerItem>
+      <Card className='group overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300'>
       <div className="w-full h-[150px] flex flex-col items-center justify-center bg-tertiary dark:bg-secondary/40 gap-y-3 rounded-t-[30px]">
           {projectIcons[project.name] ?? <Bot size={64} strokeWidth={0.8} className="text-primary" />}
           <div className="flex gap-x-3">
@@ -36,6 +39,7 @@ const ProjectCard = ({ project }) => {
         <p className="text-muted-foreground text-sm">{project.description}</p>
       </div>
     </Card>
+    </StaggerItem>
   )
 }
 

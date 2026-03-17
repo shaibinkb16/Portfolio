@@ -1,14 +1,12 @@
 'use client';
-import Link from "next/link"; // Next.js link for navigation
-import { Button } from "./button"; // Custom button component
-
-// Swiper for carousel functionality
+import Link from "next/link";
+import { Button } from "./button";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css'; // Swiper base styles
-import 'swiper/css/pagination'; // Swiper pagination styles
-import { Pagination } from 'swiper/modules'; // Swiper module for pagination
-
-import ProjectCard from '@/components/ui/ProjectCard'; // Custom project card component
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import ProjectCard from '@/components/ui/ProjectCard';
+import { FadeIn, StaggerContainer } from '@/components/ui/AnimationWrapper';
 
 const projectData = [
   {
@@ -53,30 +51,33 @@ const Work = () => {
   return (
     <section className="mb-12 xl:mb-24">
       <div className="container mx-auto">
-        <div className="text-center xl:text-left mb-10">
-          <h2 className="section-title mb-4 mx-auto xl:mx-0">My Latest Projects</h2>
-          <p className="subtitle mb-6 max-w-[500px] mx-auto xl:mx-0">
-            Production AI projects leveraging LLMs, multi-agent systems, and voice AI.
-          </p>
-          <Link href="/projects">
-            <Button>All Projects</Button>
-          </Link>
-        </div>
-
-        <Swiper
-          slidesPerView={1}
-          breakpoints={{ 640: { slidesPerView: 2 } }}
-          spaceBetween={24}
-          modules={[Pagination]}
-          pagination={{ clickable: true }}
-          className="pb-10"
-        >
-          {projectData.map((project, index) => (
-            <SwiperSlide key={index} className="h-auto">
-              <ProjectCard project={project} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <FadeIn>
+          <div className="text-center xl:text-left mb-8">
+            <h2 className="section-title mb-3 mx-auto xl:mx-0">My Latest Projects</h2>
+            <p className="subtitle mb-4 max-w-[500px] mx-auto xl:mx-0">
+              Production AI projects leveraging LLMs, multi-agent systems, and voice AI.
+            </p>
+            <Link href="/projects">
+              <Button>All Projects</Button>
+            </Link>
+          </div>
+        </FadeIn>
+        <StaggerContainer>
+          <Swiper
+            slidesPerView={1}
+            breakpoints={{ 640: { slidesPerView: 2 } }}
+            spaceBetween={20}
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            className="pb-10"
+          >
+            {projectData.map((project, index) => (
+              <SwiperSlide key={index} style={{ height: 'auto' }}>
+                <ProjectCard project={project} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </StaggerContainer>
       </div>
     </section>
   );
