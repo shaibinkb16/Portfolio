@@ -82,7 +82,7 @@ const About = () => {
                     {activeTab === 'personal' && (
                       <motion.div key="personal" variants={tabVariants} initial="hidden" animate="visible" exit="exit">
                         <div className="text-center xl:text-left">
-                          <h3 className="h3 mb-3">AI Engineer with 8+ Months Production Experience</h3>
+                          <h3 className="h3 mb-3">AI Engineer with 10 Months Production Experience</h3>
                           <p className="subtitle max-w-xl mx-auto xl:mx-0">
                             Specializing in LLMs, Generative AI, and Voice AI. Delivered 5+ production AI projects achieving 95%+ accuracy, including multi-agent platforms and real-time voice AI systems.
                           </p>

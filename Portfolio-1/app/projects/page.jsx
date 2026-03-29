@@ -70,7 +70,7 @@ const Projects = () => {
           </TabsList>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {filteredProjects.map((project, index) => (
-              <TabsContent value={category} key={index} className="w-full h-full m-0">
+              <TabsContent value={project.category} key={index} className="w-full h-full m-0">
                 <ProjectCard project={project} />
               </TabsContent>
             ))}

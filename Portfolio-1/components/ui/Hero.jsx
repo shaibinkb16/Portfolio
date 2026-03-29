@@ -60,7 +60,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
             >
-              AI Engineer specializing in LLMs, Generative AI, and Voice AI with 8+ months production experience. Building multi-agent platforms, RAG systems, and real-time voice AI solutions.
+              AI Engineer specializing in LLMs, Generative AI, and Voice AI with 10 months production experience. Building multi-agent platforms, RAG systems, and real-time voice AI solutions.
             </motion.p>
 
             <motion.div
