@@ -87,3 +87,12 @@
   @apply bg-primary;
 }
 
+.work-swiper .swiper-pagination {
+  position: static;
+  margin-top: 0.75rem;
+}
+
+.work-swiper .swiper-pagination-bullet {
+  @apply bg-primary;
+}
+

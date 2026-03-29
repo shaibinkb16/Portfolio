@@ -69,7 +69,7 @@ const Work = () => {
             spaceBetween={20}
             modules={[Pagination]}
             pagination={{ clickable: true }}
-            className="pb-10"
+            className="work-swiper pb-4"
           >
             {projectData.map((project, index) => (
               <SwiperSlide key={index} style={{ height: 'auto' }}>

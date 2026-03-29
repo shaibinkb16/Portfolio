@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCard from "@/components/ui/ProjectCard";
+import { StaggerContainer } from "@/components/ui/AnimationWrapper";
 
 const projectData = [
   {
@@ -55,11 +56,10 @@ const Projects = () => {
     <section className='min-h-screen pt-12'>
       <div className="container mx-auto">
         <h2 className='section-title mb-8 xl:mb-12 text-center mx-auto'>My Projects</h2>
-        <Tabs defaultValue={category} className='mb-16'>
+        <Tabs value={category} onValueChange={setCategory} className='mb-16'>
           <TabsList className='w-full flex flex-wrap h-full gap-2 justify-center mb-10 bg-transparent'>
             {uniqueCategories.map((cat, index) => (
               <TabsTrigger
-                onClick={() => setCategory(cat)}
                 key={index}
                 value={cat}
                 className='capitalize border dark:border-border rounded-full px-4 py-1 text-sm'
@@ -68,14 +68,12 @@ const Projects = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {filteredProjects.map((project, index) => (
-              <TabsContent value={project.category} key={index} className="w-full h-full m-0">
-                <ProjectCard project={project} />
-              </TabsContent>
-            ))}
-          </div>
         </Tabs>
+        <StaggerContainer className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {filteredProjects.map((project, index) => (
+            <ProjectCard project={project} key={index} />
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );
