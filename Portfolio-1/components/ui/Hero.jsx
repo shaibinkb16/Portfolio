@@ -73,7 +73,7 @@ const Hero = () => {
                 <Button className="gap-x-2">Contact Me<Send size={18} /></Button>
               </Link>
               <a
-                href="/ShaibinKB-AI_Engineer.pdf"
+                href="https://drive.google.com/file/d/1_9w2ErptjnCMnaK7dUCvEHasjD-D-fhM/view?usp=sharing"
                 target="_blank"
                 rel="noreferrer"
                 onClick={notifyCVDownload}
