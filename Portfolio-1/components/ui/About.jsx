@@ -32,8 +32,8 @@ const qualificationData = [
 ];
 
 const skillData = [
-  { category: "AI & ML", skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning", "Neural Networks", "Supervised Learning", "Unsupervised Learning", "Transfer Learning", "Model Training", "Model Evaluation", "Feature Engineering"] },
-  { category: "LLMs & GenAI", skills: ["Large Language Models", "Generative AI", "GPT-4", "GPT-4o", "Claude", "LLaMA", "Mistral", "LLM Fine-tuning", "Prompt Engineering", "Few-Shot Learning", "Zero-Shot Learning"] },
+  { category: "AI & ML", skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning", "Neural Networks", "Supervised Learning", "Unsupervised Learning", "Transfer Learning", "Model Training", "Model Evaluation", "Feature Engineering", "Data Preprocessing", "Model Deployment"] },
+  { category: "LLMs & GenAI", skills: ["Large Language Models", "Generative AI", "GPT-4", "GPT-4o", "Claude", "LLaMA", "Mistral", "LLM Fine-tuning", "Prompt Engineering", "Few-Shot Learning", "Zero-Shot Learning", "Function Calling", "Tool Use"] },
   { category: "AI Frameworks", skills: ["Python", "PyTorch", "TensorFlow", "Keras", "Scikit-learn", "Hugging Face Transformers", "LangChain", "LangGraph", "LlamaIndex", "OpenAI API"] },
   { category: "NLP", skills: ["Natural Language Processing", "Text Classification", "Sentiment Analysis", "Text Generation", "Semantic Search"] },
   { category: "AI Agents", skills: ["Multi-Agent Systems", "Agent-to-Agent Communication (A2A)", "Model Context Protocol (MCP)", "ReAct Framework", "Agent Handoff", "Tool Integration"] },
@@ -82,7 +82,7 @@ const About = () => {
                     {activeTab === 'personal' && (
                       <motion.div key="personal" variants={tabVariants} initial="hidden" animate="visible" exit="exit">
                         <div className="text-center xl:text-left">
-                          <h3 className="h3 mb-3">AI Engineer with 11 Months Production Experience</h3>
+                          <h3 className="h3 mb-3">AI Engineer with 1 Year Production Experience</h3>
                           <p className="subtitle max-w-xl mx-auto xl:mx-0">
                             Specializing in LLMs, Generative AI, and Voice AI. Delivered 5+ production AI projects achieving 95%+ accuracy, including multi-agent platforms and real-time voice AI systems.
                           </p>
