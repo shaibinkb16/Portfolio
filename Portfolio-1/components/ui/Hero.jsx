@@ -1,24 +1,10 @@
 'use client';
 import Link from "next/link";
 import { Button } from "./button";
-import { Download, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { RiArrowDownSLine } from 'react-icons/ri';
 import Socials from "./Socials";
 import { motion } from "framer-motion";
-import emailjs from '@emailjs/browser';
-
-const notifyCVDownload = () => {
-  emailjs.send(
-    'service_hsw3ufm',
-    'template_uge58en',
-    {
-      name: 'Portfolio Visitor',
-      email: 'shaibinkb16@gmail.com',
-      message: `Someone downloaded your CV at ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST`,
-    },
-    '7BJU6XZt7VqAxd8Ye'
-  ).catch(() => {});
-};
 
 const Hero = () => {
   return (
@@ -72,16 +58,6 @@ const Hero = () => {
               <Link href='/contact'>
                 <Button className="gap-x-2">Contact Me<Send size={18} /></Button>
               </Link>
-              <a
-                href="https://drive.google.com/file/d/1_9w2ErptjnCMnaK7dUCvEHasjD-D-fhM/view?usp=sharing"
-                target="_blank"
-                rel="noreferrer"
-                onClick={notifyCVDownload}
-              >
-                <Button variant='secondary' className="gap-x-2">
-                  Download CV<Download size={18} />
-                </Button>
-              </a>
             </motion.div>
 
             <motion.div
