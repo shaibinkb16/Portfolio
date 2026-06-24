@@ -22,8 +22,8 @@ const Template = ({ children }) => {
       </motion.main>
       {/* completion bar*/}
       <span
-        style={{ transform: `translateY(${completion - 100}%)` }}
-        className="fixed z-50 bg-primary w-1 top-0 right-0 bottom-0 transition-all duration-700"
+        style={{ transform: `scaleX(${completion / 100})`, transformOrigin: 'left' }}
+        className="fixed z-50 bg-primary h-[3px] top-0 left-0 right-0 transition-transform duration-200 ease-out"
       ></span>
 {/*       <div className="h-[4000px]"></div>
  */}    </>
