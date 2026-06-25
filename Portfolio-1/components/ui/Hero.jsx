@@ -55,7 +55,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <Link href='/contact'>
+              <Link href='/contact' data-track="contact_hero">
                 <Button className="gap-x-2">Contact Me<Send size={18} /></Button>
               </Link>
             </motion.div>

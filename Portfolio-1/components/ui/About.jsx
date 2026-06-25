@@ -72,10 +72,10 @@ const About = () => {
             </div>
             <div className="flex-1 w-full">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="w-full grid grid-cols-3 mb-6">
-                  <TabsTrigger value="personal" className="text-xs sm:text-sm">Personal Info</TabsTrigger>
-                  <TabsTrigger value="qualification" className="text-xs sm:text-sm">Qualifications</TabsTrigger>
-                  <TabsTrigger value="skills" className="text-xs sm:text-sm">Skills</TabsTrigger>
+                <TabsList className="w-full grid grid-cols-3 mb-8 p-1 bg-muted/30 border border-border rounded-xl">
+                  <TabsTrigger value="personal" data-track="tab_personal" className="text-xs sm:text-sm font-medium py-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white">Personal Info</TabsTrigger>
+                  <TabsTrigger value="qualification" data-track="tab_experience" className="text-xs sm:text-sm font-medium py-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white">Experience</TabsTrigger>
+                  <TabsTrigger value="skills" data-track="tab_skills" className="text-xs sm:text-sm font-medium py-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white">Tech Stack</TabsTrigger>
                 </TabsList>
                 <div className="mt-6 relative overflow-hidden">
                   <AnimatePresence mode="wait">

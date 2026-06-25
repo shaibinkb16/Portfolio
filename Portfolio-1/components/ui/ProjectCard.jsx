@@ -20,15 +20,16 @@ const ProjectCard = ({ project }) => {
       <Card className='group overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300'>
       <div className="w-full h-[150px] flex flex-col items-center justify-center bg-tertiary dark:bg-secondary/40 gap-y-3 rounded-t-[30px]">
           {projectIcons[project.name] ?? <Bot size={64} strokeWidth={0.8} className="text-primary" />}
-          <div className="flex gap-x-3">
+          {/* Action Links */}
+          <div className="flex gap-x-2">
             {project.link && project.link !== '/' && (
-              <Link href={project.link} className="bg-secondary w-[34px] h-[34px] rounded-full flex justify-center items-center hover:opacity-80 transition-all">
-                <Link2Icon size={15} className="text-white" />
+              <Link href={project.link} data-track={`demo_${project.name}`} className="bg-background hover:bg-muted border border-border w-[30px] h-[30px] rounded-lg flex justify-center items-center transition-colors duration-200">
+                <Link2Icon size={13} className="text-muted-foreground group-hover:text-foreground" />
               </Link>
             )}
             {project.github && (
-              <Link href={project.github} className="bg-secondary w-[34px] h-[34px] rounded-full flex justify-center items-center hover:opacity-80 transition-all">
-                <Github size={15} className="text-white" />
+              <Link href={project.github} data-track={`github_${project.name}`} className="bg-background hover:bg-muted border border-border w-[30px] h-[30px] rounded-lg flex justify-center items-center transition-colors duration-200">
+                <Github size={13} className="text-muted-foreground group-hover:text-foreground" />
               </Link>
             )}
           </div>
