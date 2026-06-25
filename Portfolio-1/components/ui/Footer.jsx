@@ -7,19 +7,10 @@ const Footer = () => {
   const [visits, setVisits] = useState(null);
 
   useEffect(() => {
-    fetch('/api/visit', { method: 'POST' })
-      .then(res => {
-        if (!res.ok) throw new Error('API error');
-        return res.json();
-      })
+    fetch('/api/visit')
+      .then(res => res.json())
       .then(data => setVisits(data.count))
-      .catch(() => {
-        // fallback: try GET
-        fetch('/api/visit')
-          .then(res => res.json())
-          .then(data => setVisits(data.count))
-          .catch(() => setVisits(null));
-      });
+      .catch(() => setVisits(null));
   }, []);
 
   return (

@@ -57,12 +57,17 @@ export async function POST(request) {
   const count = await redis.incr('portfolio:visits');
 
   try {
-    const body = await request.json();
-    const { sessionId, type, path, screen, lang, tz, action } = body;
-
-    if (!sessionId) {
+    const contentType = request.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
       return NextResponse.json({ count });
     }
+
+    const body = await request.json().catch(() => null);
+    if (!body || !body.sessionId) {
+      return NextResponse.json({ count });
+    }
+
+    const { sessionId, type, path, screen, lang, tz, action } = body;
 
     const sessionMetaKey = `portfolio:session:${sessionId}:metadata`;
     const sessionActionsKey = `portfolio:session:${sessionId}:actions`;
