@@ -1,5 +1,18 @@
 https://alamkrithasiju.netlify.app/
 
+## Source attribution tracking links
+
+Use a source tag in the portfolio URL when sharing from external platforms. The tracker now records this source in `/api/visit` telemetry and dashboard panels.
+
+Examples:
+- Instagram: `https://www.shaibin-kb.in/?source=instagram`
+- LinkedIn: `https://www.shaibin-kb.in/?source=linkedin`
+- Upwork: `https://www.shaibin-kb.in/?source=upwork`
+- Fiverr: `https://www.shaibin-kb.in/?source=fiverr`
+- GitHub: `https://www.shaibin-kb.in/?source=github`
+
+Also supported: `utm_source`, `src`, `from`, `platform` (for example: `https://www.shaibin-kb.in/?utm_source=linkedin`).
+
 ## Projects
 
 ### 🚀 🔹 1. Multi-Agent AI Voice Platform
