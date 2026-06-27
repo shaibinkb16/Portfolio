@@ -59,6 +59,48 @@ const parseUA = (uaString) => {
   return { browser, os };
 };
 
+const SOURCE_QUERY_KEYS = ['source', 'utm_source', 'src', 'from', 'platform'];
+
+const normalizeSource = (rawSource) => {
+  const source = (rawSource || '').toString().trim().toLowerCase();
+  if (!source || ['direct', 'unknown', 'none', 'null', 'undefined', '(not set)'].includes(source)) {
+    return 'Direct/Unknown';
+  }
+  if (source.includes('instagram')) return 'Instagram';
+  if (source.includes('linkedin') || source.includes('lnkd')) return 'LinkedIn';
+  if (source.includes('upwork')) return 'Upwork';
+  if (source.includes('fiverr')) return 'Fiverr';
+  if (source.includes('github')) return 'GitHub';
+  if (source.includes('facebook') || source === 'fb') return 'Facebook';
+  if (source.includes('twitter') || source === 'x' || source.includes('x.com')) return 'X/Twitter';
+  if (source.includes('youtube') || source.includes('youtu.be')) return 'YouTube';
+  if (source.includes('whatsapp') || source.includes('wa.me') || source === 'wa') return 'WhatsApp';
+  if (source.includes('email') || source.includes('mail')) return 'Email';
+  return 'Direct/Unknown';
+};
+
+const extractSourceFromPath = (path) => {
+  if (!path || typeof path !== 'string' || !path.includes('?')) return null;
+  try {
+    const url = new URL(path, 'https://shaibin-kb.in');
+    for (const key of SOURCE_QUERY_KEYS) {
+      const value = url.searchParams.get(key);
+      if (value) return normalizeSource(value);
+    }
+  } catch {
+    return null;
+  }
+  return null;
+};
+
+const extractSessionSource = (actions = []) => {
+  for (const action of actions) {
+    const source = extractSourceFromPath(action?.path);
+    if (source) return source;
+  }
+  return 'Direct/Unknown';
+};
+
 async function sendNewSessionEmail(metadata) {
   const uaParsed = parseUA(metadata.userAgent);
   const deviceLabel = `${uaParsed.browser} on ${uaParsed.os}`;
@@ -260,6 +302,7 @@ export async function GET(request) {
       const countryCounts = {};
       let mobileCount = 0;
       let desktopCount = 0;
+      const sourceCounts = {};
 
       validSessions.forEach(s => {
         const meta = s.metadata || {};
@@ -270,6 +313,9 @@ export async function GET(request) {
         if (hasClicks) {
           interactiveSessions++;
         }
+
+        const source = extractSessionSource(actions);
+        sourceCounts[source] = (sourceCounts[source] || 0) + 1;
 
         // Count pageviews
         actions.forEach(a => {
@@ -330,6 +376,16 @@ export async function GET(request) {
       const totalSessionsCount = validSessions.length;
       const interactionRate = totalSessionsCount > 0 ? Math.round((interactiveSessions / totalSessionsCount) * 100) : 0;
       const avgActions = totalSessionsCount > 0 ? (totalActions / totalSessionsCount).toFixed(1) : 0;
+      const sourceCardLabels = ['Instagram', 'LinkedIn', 'Upwork', 'Fiverr', 'GitHub', 'Facebook', 'X/Twitter', 'YouTube', 'WhatsApp', 'Email', 'Direct/Unknown'];
+      const sourceCardsHtml = sourceCardLabels.map((label) => `
+        <div class="metric-card source">
+          <div class="metric-header">
+            <span>${label}</span>
+          </div>
+          <div class="metric-value">${sourceCounts[label] || 0}</div>
+          <div class="metric-sub">Visits</div>
+        </div>
+      `).join('');
 
 
 
@@ -687,6 +743,7 @@ export async function GET(request) {
     .metric-card.visitors { --card-accent: var(--emerald); }
     .metric-card.sessions { --card-accent: var(--violet); }
     .metric-card.interaction { --card-accent: var(--rose); }
+    .metric-card.source { --card-accent: var(--amber); }
 
     .metric-header {
       display: flex;
@@ -1230,6 +1287,11 @@ export async function GET(request) {
       </div>
     </div>
 
+    <!-- Source cards -->
+    <div class="metrics-grid">
+      ${sourceCardsHtml}
+    </div>
+
     <!-- Body columns -->
     <div class="dashboard-body">
       <!-- Left side: Insights -->
@@ -1448,4 +1510,3 @@ export async function GET(request) {
   // Backwards compatible response for Footer.jsx visit display
   return NextResponse.json({ count });
 }
-
