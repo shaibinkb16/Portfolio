@@ -1,6 +1,37 @@
 # Portfolio
 Hey its me
 
+## Link source labels (email click notifications)
+
+Use `?source=` on portfolio URLs when sharing links so email notifications show:
+
+`Clicked from: <Source>`
+
+Supported source labels:
+- Instagram
+- LinkedIn
+- Upwork
+- Fiverr
+- GitHub
+- Facebook
+- X/Twitter
+- YouTube
+- WhatsApp
+- Email
+- Direct/Unknown (fallback)
+
+Example share links:
+- `https://www.shaibin-kb.in/?source=instagram`
+- `https://www.shaibin-kb.in/?source=linkedin`
+- `https://www.shaibin-kb.in/?source=upwork`
+- `https://www.shaibin-kb.in/?source=fiverr`
+- `https://www.shaibin-kb.in/?source=github`
+- `https://www.shaibin-kb.in/?source=facebook`
+- `https://www.shaibin-kb.in/?source=twitter`
+- `https://www.shaibin-kb.in/?source=youtube`
+- `https://www.shaibin-kb.in/?source=whatsapp`
+- `https://www.shaibin-kb.in/?source=email`
+
 ## Projects
 
 ### 🚀 🔹 1. Multi-Agent AI Voice Platform
