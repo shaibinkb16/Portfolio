@@ -38,6 +38,62 @@ const countryNames = {
   'Unknown': 'Unknown Location 🌐'
 };
 
+const SOURCE_LABELS = [
+  { label: 'Instagram', keys: ['instagram'] },
+  { label: 'LinkedIn', keys: ['linkedin'] },
+  { label: 'Upwork', keys: ['upwork'] },
+  { label: 'Fiverr', keys: ['fiverr', 'fiver'] },
+  { label: 'GitHub', keys: ['github'] },
+  { label: 'Facebook', keys: ['facebook', 'fb.com'] },
+  { label: 'X/Twitter', keys: ['twitter', 'x.com', 't.co'] },
+  { label: 'YouTube', keys: ['youtube', 'youtu.be'] },
+  { label: 'WhatsApp', keys: ['whatsapp', 'wa.me'] },
+  { label: 'Email', keys: ['email', 'mailto', 'mail.', 'gmail', 'outlook', 'yahoo', 'protonmail'] },
+];
+
+function mapSourceLabel(rawValue) {
+  if (!rawValue) return null;
+  const value = String(rawValue).trim().toLowerCase();
+  if (!value) return null;
+  const directAliases = ['direct', 'unknown', '(direct)', '(none)', 'none', 'null'];
+  if (directAliases.includes(value)) return 'Direct/Unknown';
+  if (value === 'x') return 'X/Twitter';
+
+  for (const item of SOURCE_LABELS) {
+    if (item.keys.some((key) => value.includes(key))) {
+      return item.label;
+    }
+  }
+  return null;
+}
+
+function detectClickSource({ source, path, referer }) {
+  const querySource = (() => {
+    if (!path || typeof path !== 'string' || !path.includes('?')) return null;
+    try {
+      const query = path.split('?')[1] || '';
+      return new URLSearchParams(query).get('source');
+    } catch {
+      return null;
+    }
+  })();
+
+  const explicitLabel = mapSourceLabel(source) || mapSourceLabel(querySource);
+  if (explicitLabel) return explicitLabel;
+
+  const refererValue = referer && referer !== 'Direct' ? referer : '';
+  const refererHost = (() => {
+    if (!refererValue) return '';
+    try {
+      return new URL(refererValue).hostname.toLowerCase();
+    } catch {
+      return String(refererValue).toLowerCase();
+    }
+  })();
+
+  return mapSourceLabel(refererHost) || 'Direct/Unknown';
+}
+
 const parseUA = (uaString) => {
   if (!uaString) return { browser: 'Unknown Browser', os: 'Unknown OS' };
   let browser = 'Unknown Browser';
@@ -60,35 +116,7 @@ const parseUA = (uaString) => {
 };
 
 async function sendNewSessionEmail(metadata) {
-  const uaParsed = parseUA(metadata.userAgent);
-  const deviceLabel = `${uaParsed.browser} on ${uaParsed.os}`;
-  
-  const country = metadata.country || 'Unknown';
-  const countryName = countryNames[country.toUpperCase()] || `${country} 🌐`;
-  const cityStr = metadata.city && metadata.city !== 'Unknown' ? `${metadata.city}, ` : '';
-  const locationLabel = `${cityStr}${countryName}`;
-
-  const secret = process.env.ANALYTICS_SECRET || 'shaibin_analytics_key';
-  const dashboardUrl = `https://www.shaibin-kb.in/api/visit?secret=${secret}`;
-
-  const message = `
-==================================================
-        PORTFOLIO TELEMETRY: NEW VISITOR ALERT     
-==================================================
-
-📍 Location:   ${locationLabel}
-🌐 IP Address: ${metadata.ip || 'Unknown'}
-🔗 Referrer:   ${metadata.referer || 'Direct'}
-
-📱 Device:     ${deviceLabel}
-🖥️ Screen:     ${metadata.screen || 'Unknown'} (${metadata.lang || 'Unknown'})
-⏰ Time:       ${metadata.timestamp || 'Unknown'}
-
---------------------------------------------------
-View active session details & live logs:
-${dashboardUrl}
-==================================================
-  `.trim();
+  const message = `Clicked from: ${metadata.source || 'Direct/Unknown'}`;
 
   const payload = {
     service_id: EMAILJS_SERVICE_ID,
@@ -98,16 +126,7 @@ ${dashboardUrl}
       name: 'Portfolio Tracker',
       email: RECIPIENT_EMAIL,
       message: message,
-      // Individual fields for rich EmailJS templates
-      location: locationLabel,
-      ip: metadata.ip || 'Unknown',
-      referer: metadata.referer || 'Direct',
-      device: deviceLabel,
-      screen: metadata.screen || 'Unknown',
-      lang: metadata.lang || 'Unknown',
-      timezone: metadata.tz || 'Unknown',
-      timestamp: metadata.timestamp || 'Unknown',
-      dashboard_url: dashboardUrl
+      source: metadata.source || 'Direct/Unknown',
     },
   };
 
@@ -141,7 +160,7 @@ export async function POST(request) {
       return NextResponse.json({ count });
     }
 
-    const { sessionId, type, path, screen, lang, tz, action } = body;
+    const { sessionId, type, path, screen, lang, tz, action, source } = body;
 
     const sessionMetaKey = `portfolio:session:${sessionId}:metadata`;
     const sessionActionsKey = `portfolio:session:${sessionId}:actions`;
@@ -156,6 +175,7 @@ export async function POST(request) {
       const ip = request.headers.get('x-forwarded-for') || request.ip || 'Unknown';
       const userAgent = request.headers.get('user-agent') || 'Unknown';
       const referer = request.headers.get('referer') || 'Direct';
+      const clickSource = detectClickSource({ source, path, referer });
       
       const country = request.headers.get('x-vercel-ip-country') || request.headers.get('x-nf-country') || 'Unknown';
       const city = request.headers.get('x-vercel-ip-city') || 'Unknown';
@@ -167,6 +187,7 @@ export async function POST(request) {
         ip: cleanIp,
         userAgent,
         referer,
+        source: clickSource,
         country,
         city,
         screen: screen || 'Unknown',
@@ -1448,4 +1469,3 @@ export async function GET(request) {
   // Backwards compatible response for Footer.jsx visit display
   return NextResponse.json({ count });
 }
-

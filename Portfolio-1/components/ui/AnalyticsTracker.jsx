@@ -20,6 +20,7 @@ export default function AnalyticsTracker() {
           sessionId,
           type,
           path: pathname + (searchParams.toString() ? '?' + searchParams.toString() : ''),
+          source: searchParams.get('source') || null,
           screen: `${window.screen.width}x${window.screen.height}`,
           lang: navigator.language || 'Unknown',
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
