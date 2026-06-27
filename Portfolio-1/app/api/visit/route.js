@@ -59,6 +59,12 @@ const parseUA = (uaString) => {
   return { browser, os };
 };
 
+const normalizeSource = (source) => {
+  if (!source || typeof source !== 'string') return 'Direct';
+  const cleaned = source.trim().toLowerCase();
+  return cleaned || 'Direct';
+};
+
 async function sendNewSessionEmail(metadata) {
   const uaParsed = parseUA(metadata.userAgent);
   const deviceLabel = `${uaParsed.browser} on ${uaParsed.os}`;
@@ -79,6 +85,7 @@ async function sendNewSessionEmail(metadata) {
 📍 Location:   ${locationLabel}
 🌐 IP Address: ${metadata.ip || 'Unknown'}
 🔗 Referrer:   ${metadata.referer || 'Direct'}
+🎯 Source:     ${metadata.source || 'Direct'}
 
 📱 Device:     ${deviceLabel}
 🖥️ Screen:     ${metadata.screen || 'Unknown'} (${metadata.lang || 'Unknown'})
@@ -102,6 +109,7 @@ ${dashboardUrl}
       location: locationLabel,
       ip: metadata.ip || 'Unknown',
       referer: metadata.referer || 'Direct',
+      source: metadata.source || 'Direct',
       device: deviceLabel,
       screen: metadata.screen || 'Unknown',
       lang: metadata.lang || 'Unknown',
@@ -141,7 +149,8 @@ export async function POST(request) {
       return NextResponse.json({ count });
     }
 
-    const { sessionId, type, path, screen, lang, tz, action } = body;
+    const { sessionId, type, path, screen, lang, tz, action, source } = body;
+    const normalizedSource = normalizeSource(source);
 
     const sessionMetaKey = `portfolio:session:${sessionId}:metadata`;
     const sessionActionsKey = `portfolio:session:${sessionId}:actions`;
@@ -167,6 +176,7 @@ export async function POST(request) {
         ip: cleanIp,
         userAgent,
         referer,
+        source: normalizedSource,
         country,
         city,
         screen: screen || 'Unknown',
@@ -187,6 +197,15 @@ export async function POST(request) {
       if (isNewVisitor === 1 && cleanIp !== 'Unknown' && cleanIp !== '127.0.0.1' && cleanIp !== '::1') {
         await sendNewSessionEmail(metadata);
       }
+    } else if (source) {
+      const existingMetaRaw = await redis.get(sessionMetaKey);
+      if (existingMetaRaw) {
+        const existingMeta = typeof existingMetaRaw === 'string' ? JSON.parse(existingMetaRaw) : existingMetaRaw;
+        if (!existingMeta.source || existingMeta.source === 'Direct' || existingMeta.source === 'direct') {
+          existingMeta.source = normalizedSource;
+          await redis.set(sessionMetaKey, JSON.stringify(existingMeta));
+        }
+      }
     }
 
     // 2. Append this specific action (e.g. Pageview, click) to session history
@@ -194,6 +213,7 @@ export async function POST(request) {
       type,
       path,
       action: action || null,
+      source: normalizedSource,
       timestamp
     };
     await redis.rpush(sessionActionsKey, JSON.stringify(actionItem));
@@ -257,6 +277,7 @@ export async function GET(request) {
       let interactiveSessions = 0;
       const pageCounts = {};
       const referrerCounts = {};
+      const sourceCounts = {};
       const countryCounts = {};
       let mobileCount = 0;
       let desktopCount = 0;
@@ -292,6 +313,10 @@ export async function GET(request) {
         }
         referrerCounts[refClean] = (referrerCounts[refClean] || 0) + 1;
 
+        // Count attributed sources (utm/source param fallback)
+        const sourceLabel = normalizeSource(meta.source);
+        sourceCounts[sourceLabel] = (sourceCounts[sourceLabel] || 0) + 1;
+
         // Count countries
         const country = meta.country || 'Unknown';
         countryCounts[country] = (countryCounts[country] || 0) + 1;
@@ -324,6 +349,11 @@ export async function GET(request) {
 
       const topCountries = Object.entries(countryCounts)
         .map(([country, count]) => ({ country, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+
+      const topSources = Object.entries(sourceCounts)
+        .map(([source, count]) => ({ source, count }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
@@ -379,6 +409,21 @@ export async function GET(request) {
         `;
       }).join('');
 
+      const topSourcesHtml = topSources.map((ts) => {
+        const pct = Math.round((ts.count / (totalSessionsCount || 1)) * 100) || 0;
+        return `
+          <div class="stats-item">
+            <div class="stats-item-header">
+              <span class="stats-item-name">${ts.source}</span>
+              <span class="stats-item-val">${ts.count} sess</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${pct}%; --bar-start: var(--emerald); --bar-end: var(--sky);"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
       const emptyStateHtml = `
         <div style="text-align: center; padding: 4rem 2rem; color: var(--text-dark); border: 1px dashed var(--border-light); border-radius: 18px; background: rgba(255,255,255,0.01);">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem; opacity: 0.5;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
@@ -402,6 +447,7 @@ export async function GET(request) {
                            ? 'mobile' : 'desktop';
 
         const dateStr = meta.timestamp || 'Unknown Time';
+        const sourceLabel = normalizeSource(meta.source);
         const uaParsed = parseUA(meta.userAgent);
         const browserLabel = `${uaParsed.browser} on ${uaParsed.os}`;
 
@@ -422,7 +468,7 @@ export async function GET(request) {
               `;
             }).join('');
 
-        const searchAttr = `${meta.ip} ${locationStr} ${meta.referer} ${browserLabel}`.replace(/"/g, '&quot;');
+        const searchAttr = `${meta.ip} ${locationStr} ${meta.referer} ${sourceLabel} ${browserLabel}`.replace(/"/g, '&quot;');
         
         return `
           <div class="session-card" 
@@ -437,6 +483,7 @@ export async function GET(request) {
                 <span class="location-badge">📍 ${locationStr}</span>
                 <span class="ip-reveal" title="Hover to reveal IP address">${meta.ip || 'Unknown IP'}</span>
                 <span class="ref-badge" title="Referrer: ${meta.referer || 'Direct'}">From: ${meta.referer || 'Direct'}</span>
+                <span class="ref-badge" title="Attributed source tag">Source: ${sourceLabel}</span>
                 <span class="hits-count-badge">${hits} event${hits === 1 ? '' : 's'}</span>
               </div>
               <div class="card-header-right">
@@ -1271,6 +1318,17 @@ export async function GET(request) {
           </div>
         </div>
 
+        <!-- Attributed Sources -->
+        <div class="panel">
+          <h3 class="panel-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M2 7h20"></path><path d="M2 17h20"></path></svg>
+            Top Sources (source/utm_source)
+          </h3>
+          <div class="stats-list">
+            ${topSourcesHtml || '<div style="color: var(--text-dark); font-size: 0.85rem;">No source tags captured yet.</div>'}
+          </div>
+        </div>
+
         <!-- Top Countries -->
         <div class="panel">
           <h3 class="panel-title">
@@ -1448,4 +1506,3 @@ export async function GET(request) {
   // Backwards compatible response for Footer.jsx visit display
   return NextResponse.json({ count });
 }
-

@@ -7,6 +7,17 @@ export default function AnalyticsTracker() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    const getSourceFromParams = () => {
+      const sourceKeys = ['source', 'src', 'utm_source', 'from', 'platform'];
+      for (const key of sourceKeys) {
+        const value = searchParams.get(key);
+        if (value) {
+          return value.trim().toLowerCase();
+        }
+      }
+      return null;
+    };
+
     // Generate or retrieve a temporary session ID for this browser tab session
     let sessionId = sessionStorage.getItem('portfolio_session_id');
     if (!sessionId) {
@@ -14,12 +25,20 @@ export default function AnalyticsTracker() {
       sessionStorage.setItem('portfolio_session_id', sessionId);
     }
 
+    const paramSource = getSourceFromParams();
+    const storedSource = sessionStorage.getItem('portfolio_source');
+    if (paramSource) {
+      sessionStorage.setItem('portfolio_source', paramSource);
+    }
+    const source = paramSource || storedSource || 'direct';
+
     const trackEvent = async (type, details = {}) => {
       try {
         const payload = {
           sessionId,
           type,
           path: pathname + (searchParams.toString() ? '?' + searchParams.toString() : ''),
+          source,
           screen: `${window.screen.width}x${window.screen.height}`,
           lang: navigator.language || 'Unknown',
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
